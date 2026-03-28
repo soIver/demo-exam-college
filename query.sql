@@ -3,11 +3,11 @@ WITH product_material_cost as (
 		pm.product, 
 		SUM(pm.quantity * m.price) as material_cost
 	FROM product_materials pm
-	JOIN materials m on pm.material = m.id
+	JOIN materials m ON pm.material = m.id
 	GROUP BY pm.product
 )
 
-SELECT 
+SELECT
 	o.id as "Код заказа",
 	o.date as "Дата заказа",
 	c.name as "Покупатель",
@@ -16,4 +16,4 @@ FROM orders o
 JOIN contractors c ON o.buyer = c.id
 JOIN order_products op ON o.id = op."order"
 JOIN product_material_cost pmc on op.product = pmc.product
-GROUP BY o.id, o.date, c.name
+GROUP BY o.id, c.name
