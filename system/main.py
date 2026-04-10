@@ -11,14 +11,7 @@ from models.user import UserModel
 
 app = QApplication(sys.argv)
 
-STYLESHEET = """
-    QWidget#panel { border: 1px solid black; }
-    QLabel { font-size: 14pt; }
-    QLabel#title { font-size: 16pt; font-weight: bold; }
-    QLineEdit, QPushButton { font-size: 12pt; border: 1px solid black; padding: 5px; }
-    QMessageBox { font-size: 14pt; }
-"""
-app.setStyleSheet(STYLESHEET)
+app.setStyleSheet(config.STYLESHEET)
 
 # установление соединения с БД
 db = QSqlDatabase.addDatabase('QPSQL')

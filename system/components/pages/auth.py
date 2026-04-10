@@ -1,5 +1,3 @@
-import traceback
-
 from PyQt5.QtWidgets import QWidget, QPushButton, QMessageBox, QLabel, QVBoxLayout, QHBoxLayout
 from PyQt5.QtCore import Qt
 
@@ -70,7 +68,6 @@ class AuthWindow(QWidget):
 
         except Exception as e:
             QMessageBox.critical(self, "Ошибка", "Непредвиденная ошибка.")
-            traceback.print_exc()
     
     def update(self):
         state.app_user.removeRow(0)
