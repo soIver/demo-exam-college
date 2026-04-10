@@ -1,7 +1,8 @@
 from PyQt5.QtWidgets import QLineEdit, QTableView, QHeaderView, QStyledItemDelegate
 from PyQt5.QtSql import QSqlRelationalDelegate
 from PyQt5.QtCore import Qt
-from utils.state import state
+
+from state import state
 
 
 class EditorSizeDelegate(QSqlRelationalDelegate):

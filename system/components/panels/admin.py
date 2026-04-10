@@ -1,68 +1,32 @@
-from PyQt5.QtWidgets import QWidget, QLabel, QPushButton, QMessageBox, QGridLayout, QHBoxLayout
+from PyQt5.QtWidgets import QWidget, QPushButton, QMessageBox, QHBoxLayout, QVBoxLayout
 
-from utils.state import state
-from components.panel import AbstractPanel
-from components.users import UsersView
+from components.views.users import UsersView
+from state import state
 
-class Workspace(QWidget):
+
+class AdminPanel(QWidget):
     def __init__(self):
         super().__init__()
-        self.grid = QGridLayout()
-        self.setLayout(self.grid)
-
-    def clear_grid(self):
-        for i in reversed(range(self.grid.count())):
-            self.grid.itemAt(i).widget().deleteLater()
-
-    def update(self):
-        self.clear_grid()
-        self.grid.addWidget(AccountPanel(), 0, 0)
-        self.grid.setRowStretch(1, 20)
-        if state.app_user.record(0).value("name") == "Администратор":
-            self.grid.addWidget(AdminPanel(), 1, 0)
-        return super().update()
-        
-class AccountPanel(AbstractPanel):
-    def __init__(self):
-        super().__init__(stretch_policy={"ver": 1, "hor": 1})
-        username = state.app_user.record(0).value("username")
-        role = state.app_user.record(0).value("name")
-        login_label = QLabel(f"Вы авторизованы как {username} ({role})")
-        logout_button = QPushButton("Выйти из аккаунта")
-        logout_button.setObjectName("danger")
-        logout_button.clicked.connect(lambda: state.app_window.update_and_set_active_page("auth"))
-        main_widget_hlo = QHBoxLayout()
-        main_widget_hlo.addWidget(login_label, 15)
-        main_widget_hlo.addWidget(logout_button, 5)
-
-        self.panel_widget_vlo.addLayout(main_widget_hlo)
-
-class AdminPanel(AbstractPanel):
-    def __init__(self):
-        super().__init__(title_text="Пользователи", stretch_policy={"ver": 1, "hor": 1})
+        vlo = QVBoxLayout(self)
         
         self.users_view = UsersView()
-        self.panel_widget_vlo.addWidget(self.users_view)
+        vlo.addWidget(self.users_view)
 
         controls_layout = QHBoxLayout()
         
         btn_del = QPushButton("Удалить")
-        btn_del.setObjectName("danger")
         btn_del.clicked.connect(self.delete_user)
         
         btn_unblock = QPushButton("Разблокировать")
-        btn_unblock.setObjectName("danger")
         btn_unblock.clicked.connect(self.unblock_user)
 
         btn_cancel = QPushButton("Отменить изменения")
-        btn_cancel.setObjectName("danger")
         btn_cancel.clicked.connect(state.users.select)
         
         btn_add = QPushButton("Добавить")
         btn_add.clicked.connect(self.add_user)
 
         btn_save = QPushButton("Применить изменения")
-        btn_save.setObjectName("confirm")
         btn_save.clicked.connect(self.save_changes)
 
         controls_layout.addWidget(btn_del)
@@ -71,7 +35,7 @@ class AdminPanel(AbstractPanel):
         controls_layout.addWidget(btn_add)
         controls_layout.addWidget(btn_save)
         
-        self.panel_widget_vlo.addLayout(controls_layout)
+        vlo.addLayout(controls_layout)
 
     def add_user(self):
         model = state.users

@@ -20,4 +20,5 @@ class UserModel(QSqlRelationalTableModel):
         return self.record(0)
     
     def is_blocked(self, record_index: int = 0):
-        return self.record(record_index).value("fail_auth_attempts") >= self.MAX_AUTH_ATTEMPTS
+        attempts = self.record(record_index).value("fail_auth_attempts") or 0
+        return attempts >= self.MAX_AUTH_ATTEMPTS
